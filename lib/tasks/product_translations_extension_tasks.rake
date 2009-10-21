@@ -20,39 +20,39 @@ namespace :spree do
 
         puts "updating product names, description, meta_keywords and meta_description..."
         Product.all.each do |p| 
-          p.name = sql.execute("select products.name from products where products.id=#{p.id}").fetch_row.first
-          p.description = sql.execute("select products.description from products where products.id=#{p.id}").fetch_row.first
-          p.meta_keywords = sql.execute("select products.meta_keywords from products where products.id=#{p.id}").fetch_row.first
-          p.meta_description = sql.execute("select products.meta_description from products where products.id=#{p.id}").fetch_row.first
+          p.name = sql.execute("select products.name from products where products.id=#{p.id}")[0][0]
+          p.description = sql.execute("select products.description from products where products.id=#{p.id}")[0][0]
+          p.meta_keywords = sql.execute("select products.meta_keywords from products where products.id=#{p.id}")[0][0]
+          p.meta_description = sql.execute("select products.meta_description from products where products.id=#{p.id}")[0][0]
           p.save!
         end   
         puts "done."       
 
         puts "updating taxonomy names..."
         Taxonomy.all.each do |t|
-      	  t.name = sql.execute("select taxonomies.name from taxonomies where taxonomies.id=#{t.id}").fetch_row.first
+      	  t.name = sql.execute("select taxonomies.name from taxonomies where taxonomies.id=#{t.id}")[0][0]
       	  t.save!
         end
         puts "done."
         
         puts "updating taxon names and permalinks..."
         Taxon.all.each do |t|
-      	  t.name = sql.execute("select taxons.name from taxons where taxons.id=#{t.id}").fetch_row.first
-      	  t.permalink = sql.execute("select taxons.permalink from taxons where taxons.id=#{t.id}").fetch_row.first
+      	  t.name = sql.execute("select taxons.name from taxons where taxons.id=#{t.id}")[0][0]
+      	  t.permalink = sql.execute("select taxons.permalink from taxons where taxons.id=#{t.id}")[0][0]
       	  t.save!
         end
         puts "done."
         
         puts "updating property presentation..."
         Property.all.each do |p|
-      	  p.presentation = sql.execute("select properties.presentation from properties where properties.id=#{p.id}").fetch_row.first
+      	  p.presentation = sql.execute("select properties.presentation from properties where properties.id=#{p.id}")[0][0]
       	  p.save!
         end
         puts "done."
         
         puts "updating prototype names..."
         Prototype.all.each do |p|
-      	  p.name = sql.execute("select prototypes.name from prototypes where prototypes.id=#{p.id}").fetch_row.first
+      	  p.name = sql.execute("select prototypes.name from prototypes where prototypes.id=#{p.id}")[0][0]
       	  p.save!
         end
         puts "done."
