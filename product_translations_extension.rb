@@ -28,5 +28,13 @@ class ProductTranslationsExtension < Spree::Extension
       translates :name, :permalink
     end
 
+    Admin::BaseController.class_eval do 
+      after_filter :look_for_translatable_content, :only => :edit
+
+      def look_for_translatable_content
+        @translatable = @object.respond_to?(:create_translation_table!, true)
+      end
+    end    
   end
+
 end

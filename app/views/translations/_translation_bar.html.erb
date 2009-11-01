@@ -1,0 +1,29 @@
+<style type="text/css">
+  #trans-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background-color: yellow;
+}
+
+</style>
+
+<script type="text/javascript">
+$(function() {
+        // TODO add the bar as a body child
+        $("#trans-bar").remove().appendTo("body");
+
+        // TODO 
+});
+
+</script>
+
+
+<div id="trans-bar">
+  <div id="inner-trans-bar">
+    Is? : <%= @translatable %> <br/>
+    <%= @object.type %> <br/>
+  </div>
+</div>
+
