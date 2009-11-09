@@ -29,12 +29,33 @@ class ProductTranslationsExtension < Spree::Extension
     end
 
     Admin::BaseController.class_eval do 
-      after_filter :look_for_translatable_content, :only => :edit
 
-      def look_for_translatable_content
-        @translatable = @object.respond_to?(:create_translation_table!, true)
+      ## 
+      # {fields: 
+      #  {
+      #   description: {
+      #     "fr-FR": "daslkjsdklajlkdjljkasd",
+      #     "en-US": "dlasjldfjsfjdklfjsd"      
+      #     ...
+      #   },
+      #   productName: {
+      #     "fr-FR": "dfslfsdjfklsjfjdklh",
+      #   } 
+      #  }
+      # }
+      def get_translatable_info
+        klass = params[:model_type].constantize
+        instance = klass.find_by_id(params[:model_id])
+        
+        if instance.respond_to?(:create_translation_table!, true)
+           @translated_attr = []
+         else
+           @translated_attr = instance.globalize_options[:translated_attributes]
+         end
       end
-    end    
+      
+    end
+
   end
 
 end
