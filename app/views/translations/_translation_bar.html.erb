@@ -11,10 +11,13 @@
 
 <script type="text/javascript">
 $(function() {
-        // TODO add the bar as a body child
-        $("#trans-bar").remove().appendTo("body");
+    // TODO get the translatable fields (if any)
+    var fields = $.getJSON("http://localhost:3000/admin/translations/get_fields", function(data) {
 
-        // TODO 
+    });
+
+    // TODO add the bar as a body child
+    $("#trans-bar").remove().appendTo("body");
 });
 
 </script>
@@ -22,8 +25,8 @@ $(function() {
 
 <div id="trans-bar">
   <div id="inner-trans-bar">
-    Is? : <%= @translatable %> <br/>
-    <%= @object.type %> <br/>
+    Type: <%= @object.type %> <br/>
+    Id: <%= @object.id %> <br/>    
   </div>
 </div>
 
