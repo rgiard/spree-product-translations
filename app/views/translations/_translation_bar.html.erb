@@ -1,32 +1,74 @@
+<% if not @object.nil? %>
 <style type="text/css">
   #trans-bar {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 50px;
     background-color: yellow;
-}
+  }
 
+  #trans-bar .top-bar {
+    padding: 2px;
+    border: 2px solid darkgrey;
+    border-bottom: none;
+    background-color: lightgrey;
+  }
+
+  #trans-bar .bar-content {
+    padding: 4px;
+    height: 100px;
+    overflow-y: scroll;
+    display: none;
+  }
+
+  #trans-bar a {
+    cursor: pointer;
+  }
 </style>
 
 <script type="text/javascript">
-$(function() {
-    // TODO get the translatable fields (if any)
-    var fields = $.getJSON("http://localhost:3000/admin/translations/get_fields", function(data) {
 
+jQuery(function() {
+
+  // TODO get the translatable fields (if any)
+  var params =  {model_type: "<%= @object.type %>", model_id: "<%= @object.id %>"};
+  var data = jQuery.getJSON("/admin/translations", params, function(data) {
+    jQuery.each(data.fields, function (i, item) {
+      jQuery("#trans-bar .fields").append("<li><a>" + item + "</a></li>");
+      maximizeBar();
     });
+  });
 
-    // TODO add the bar as a body child
-    $("#trans-bar").remove().appendTo("body");
+  // TODO add the bar as a body child
+  jQuery("#trans-bar").remove().appendTo("body");
+
+  jQuery("#trans-bar .minimize-bar").click(minimizeBar);
+  jQuery("#trans-bar .maximize-bar").click(maximizeBar);
 });
 
-</script>
+function minimizeBar() {
+  jQuery("#trans-bar .bar-content").hide("fast");
+}
 
+function maximizeBar() {
+  jQuery("#trans-bar .bar-content").show("fast");
+}
+</script>
 
 <div id="trans-bar">
   <div id="inner-trans-bar">
-    Type: <%= @object.type %> <br/>
-    Id: <%= @object.id %> <br/>    
+    <div class="top-bar">
+      <span class="bar-title">Fields Translation</span>
+      <div class="bar-button">
+        <a class="minimize-bar">Minimize</a>
+        <a class="maximize-bar">Maximize<a>
+      </div>
+    </div>
+    <div class="bar-content">
+      <h2>Fields</h2>
+      <ul class="fields">
+      </ul>
+    </div>
   </div>
 </div>
-
+<% end %>
