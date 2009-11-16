@@ -1,22 +1,37 @@
-<% if not @object.nil? %>
+<% unless @object.nil? %>
 <style type="text/css">
   #trans-bar {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: yellow;
+    background-color: lightgrey;
+    color: black;
+    display: none;
   }
 
-  #trans-bar .top-bar {
+  #trans-bar #top-bar {
     padding: 2px;
     border: 2px solid darkgrey;
     border-bottom: none;
-    background-color: lightgrey;
+    background-color: grey;
+    color: black;    
+    cursor: pointer;
   }
 
-  #trans-bar .bar-content {
+  #trans-bar #top-bar h2 {
+    display: inline;
+    font-size: 110%;
+    font-family: Verdana, Arial, sans-serif;
+  }
+
+  #trans-bar #top-bar a, #trans-bar #top-bar a:visited, #trans-bar #top-bar a:hover {
+    color: black;
+  }
+
+  #trans-bar #bar-content {
     padding: 4px;
-    height: 100px;
+    height: 150px;
+    border: 2px solid darkgrey;
     overflow-y: scroll;
     display: none;
   }
@@ -30,45 +45,43 @@
 
 jQuery(function() {
 
-  // TODO get the translatable fields (if any)
+  // get the translatable fields (if any)
   var params =  {model_type: "<%= @object.type %>", model_id: "<%= @object.id %>"};
   var data = jQuery.getJSON("/admin/translations", params, function(data) {
     jQuery.each(data.fields, function (i, item) {
-      jQuery("#trans-bar .fields").append("<li><a>" + item + "</a></li>");
-      maximizeBar();
+      jQuery("#trans-bar #bar-fields").append("<li><a>" + item + "</a></li>");
+      jQuery("#trans-bar").show("slow");
     });
   });
 
-  // TODO add the bar as a body child
+  // add the bar as a body child
   jQuery("#trans-bar").remove().appendTo("body");
 
-  jQuery("#trans-bar .minimize-bar").click(minimizeBar);
-  jQuery("#trans-bar .maximize-bar").click(maximizeBar);
+  // register events
+  jQuery("#trans-bar #top-bar").toggle(maximizeBar, minimizeBar);
 });
 
 function minimizeBar() {
-  jQuery("#trans-bar .bar-content").hide("fast");
+  jQuery("#trans-bar #bar-content").hide("fast");
 }
 
 function maximizeBar() {
-  jQuery("#trans-bar .bar-content").show("fast");
+  jQuery("#trans-bar #bar-content").show("fast");
 }
 </script>
 
 <div id="trans-bar">
-  <div id="inner-trans-bar">
-    <div class="top-bar">
-      <span class="bar-title">Fields Translation</span>
-      <div class="bar-button">
-        <a class="minimize-bar">Minimize</a>
-        <a class="maximize-bar">Maximize<a>
+  <div id="top-bar">
+    <h2>Fields Translation Toolbar</h2>
+    <em>(Click to minimize / maximize)</em>
+  </div>
+
+    <div id="bar-content">
+      <h3>Fields</h3>
+      <ul id="bar-fields"></ul>
+      <div class="">
+        
       </div>
     </div>
-    <div class="bar-content">
-      <h2>Fields</h2>
-      <ul class="fields">
-      </ul>
-    </div>
-  </div>
 </div>
 <% end %>
